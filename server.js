@@ -4,6 +4,7 @@ const multer = require('multer')
 const cors = require('cors')
 const session = require("express-session");
 const MemoryStore = require("memorystore")(session);
+const crypto = require('crypto-js/sha256');
 const mysql = require('mysql2');
 require('dotenv').config()
 
@@ -17,10 +18,7 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-connection.query('SELECT * from users', (error, rows, fields) => {
-  if (error) throw error;
-  console.log('User info is: ', rows);
-});
+
 
 connection.end();
 
@@ -58,22 +56,37 @@ app.use(
 );
 
 
+app.get('/admin', (req,res) => {
+    if(req.session.role === 'admin'){
+        res.status(200).send('/admin');
+    }else{
+        res.status(200).send('/login');
+    }
+})
+
 app.post('/login', (req,res) => {
   console.log(req.session,"this")
   let id = process.env.ADMIN_ID;
   let pw = process.env.ADMIN_PW;
 
-  if(req.body.id === id && req.body.pw === pw){
-    req.session.role = 'admin'
-  }else{
-    req.session.role = 'denied'
+  let inputId = req.body.id;
+  let inputPw = sha256(req.body.pw);
+  
+  let sql = { id:inputId, password: inputPw }
+  connection.query('SELECT * from user where ?',sql, (error, result) => {
+    console.log(result)
+    if(result){
+        req.session.role = 'admin'
+        console.log('admin')
+    }else{
+        req.session.role = 'denied'
+        console.log('denied')
+    }
+  });
+   
+  if(req.session.role === 'admin'){
+      res.status(200).send('/admin');
   }
-
-  if(!req.session.role === 'undefined'){
-      res.status(403).send();
-      return;
-  }
-  res.status(200).send();
 })
 
 
