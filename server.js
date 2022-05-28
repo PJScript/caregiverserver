@@ -38,7 +38,6 @@ const s3 = new AWS.S3({
 const app = express();
 
 app.use(express.urlencoded({ extended: false }))
-app.use(bodypaser.json())
 app.use(express.json())
 app.use(cors({
     origin:'*'
@@ -70,7 +69,7 @@ app.post('/login', (req,res) => {
   console.log(req.session,"this")
   let id = process.env.ADMIN_ID;
   let pw = process.env.ADMIN_PW;
-
+  console.log(req.body,"bodybody")
   let inputId = req.body.id;
   let inputPw = sha256(req.body.pw);
   console.log(inputPw,"inputPW")
