@@ -21,7 +21,7 @@ connection.connect();
 
 
 
-connection.end();
+// connection.end();
 
 
 
@@ -75,20 +75,25 @@ app.post('/login', (req,res) => {
   console.log(inputPw,"inputPW")
   
   let sql = { account:inputId }
-  connection.query(`SELECT * from user where account="${inputId}"`,sql,(error,result) => {
-    console.log(result)
+  connection.query(`SELECT * from users where ?`,sql,async (error,result) => {
     if(result){
-        req.session.role = 'admin'
-        console.log('admin')
+        if(result[0].password === inputPw){
+            req.session.role = 'admin'
+            console.log('admin')
+            res.status(200).send('/admin');
+
+        }else{
+            res.status(403).send('/login');
+        }
     }else{
         req.session.role = 'denied'
+        res.status(200).send('/login');
         console.log('denied')
     }
   });
-   
-  if(req.session.role === 'admin'){
-      res.status(200).send('/admin');
-  }
+
+
+
 })
 
 
