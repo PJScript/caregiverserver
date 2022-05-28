@@ -75,7 +75,8 @@ app.post('/login', (req,res) => {
   console.log(inputPw,"inputPW")
   
   let sql = { account:inputId }
-  connection.query(`SELECT * from users where ?`,sql,async (error,result) => {
+  connection.query('SELECT * from users where ?',sql,(error,result) => {
+    console.log(result)
     if(result){
         if(result[0].password === inputPw){
             req.session.role = 'admin'
