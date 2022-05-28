@@ -4,7 +4,7 @@ const multer = require('multer')
 const cors = require('cors')
 const session = require("express-session");
 const MemoryStore = require("memorystore")(session);
-const crypto = require('crypto-js/sha256');
+const sha256 = require('crypto-js/sha256');
 const mysql = require('mysql2');
 require('dotenv').config()
 
