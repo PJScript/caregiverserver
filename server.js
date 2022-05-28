@@ -6,6 +6,7 @@ const session = require("express-session");
 const MemoryStore = require("memorystore")(session);
 const sha256 = require('crypto-js/sha256');
 const mysql = require('mysql2');
+const bodypaser= require('body-parser')
 require('dotenv').config()
 
 
@@ -37,6 +38,7 @@ const s3 = new AWS.S3({
 const app = express();
 
 app.use(express.urlencoded({ extended: false }))
+app.use(bodypaser.json())
 app.use(express.json())
 app.use(cors({
     origin:'*'
