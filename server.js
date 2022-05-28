@@ -71,7 +71,7 @@ app.post('/login', (req,res) => {
   let pw = process.env.ADMIN_PW;
   console.log(req.body,"bodybody")
   let inputId = req.body.id;
-  let inputPw = sha256(req.body.pw);
+  let inputPw = sha256(req.body.pw).toString();
   console.log(inputPw,"inputPW")
   
   let sql = { id:inputId, password: inputPw }
