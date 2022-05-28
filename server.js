@@ -71,6 +71,7 @@ app.post('/login', (req,res) => {
 
   let inputId = req.body.id;
   let inputPw = sha256(req.body.pw);
+  console.log(inputPw,"inputPW")
   
   let sql = { id:inputId, password: inputPw }
   connection.query('SELECT * from user where ?',sql, (error, result) => {
