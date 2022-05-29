@@ -55,7 +55,8 @@ app.use(
             checkPeriod: 600000, // 24 hours (24*60*60 * 1000ms)
         }),
         cookie: { maxAge: 600000, 
-    sameSite: 'none' 
+    sameSite: 'none' ,
+    secure:false,
 },
     })
 );
