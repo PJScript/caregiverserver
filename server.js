@@ -71,7 +71,7 @@ app.get('/gallery', (req,res) => {
     
 
     // console.log(req.session,'세션')
-        connection.query(`select * from gallery order by uid DESC limit ${num},${num+12}`, (err, result) => {
+        connection.query(`select * from gallery order by uid DESC limit ${num},${num*12}`, (err, result) => {
             // console.log(result,"this")
             connection.query(`SELECT COUNT(*) FROM gallery`, (err, count) => {
                 console.log(count)
@@ -98,7 +98,7 @@ app.get('/admin', (req,res) => {
 
     
 
-    // console.log(req.session,'세션')
+    console.log(req.session,'세션')
     if(req.session.role === 'admin'){
         connection.query(`select * from gallery order by uid DESC limit ${num},${num+12}`, (err, result) => {
             // console.log(result,"this")
