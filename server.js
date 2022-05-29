@@ -40,7 +40,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cors({
-    origin:'http://amazonaws.com',
+    origin:'http://*.amazonaws.com',
     methods: ['GET', 'POST'],
     credentials: true,
 }))
