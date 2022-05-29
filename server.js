@@ -54,7 +54,7 @@ app.use(
         store: new MemoryStore({
             checkPeriod: 600000, // 24 hours (24*60*60 * 1000ms)
         }),
-        cookie: { maxAge: 600000, domain:'http://caretestbucket.s3-website.ap-northeast-2.amazonaws.com' },
+        cookie: { maxAge: 600000 },
     })
 );
 
