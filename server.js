@@ -40,10 +40,9 @@ const app = express();
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cors({
-    origin:'http://*.amazonaws.com',
+    origin:'http://caretestbucket.s3-website.ap-northeast-2.amazonaws.com',
     methods: ['GET', 'POST'],
     credentials: true,
-    sameSite: 'none' 
 }))
 
 
@@ -55,7 +54,9 @@ app.use(
         store: new MemoryStore({
             checkPeriod: 600000, // 24 hours (24*60*60 * 1000ms)
         }),
-        cookie: { maxAge: 600000 },
+        cookie: { maxAge: 600000, 
+    sameSite: 'none' 
+},
     })
 );
 
