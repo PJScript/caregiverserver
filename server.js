@@ -43,6 +43,7 @@ app.use(cors({
     origin:'http://*.amazonaws.com',
     methods: ['GET', 'POST'],
     credentials: true,
+    sameSite: 'none' 
 }))
 
 
