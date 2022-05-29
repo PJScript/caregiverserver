@@ -133,8 +133,9 @@ app.post('/login', (req,res) => {
     }
     if(result){
         if(result[0].password === inputPw){
-            req.session.cookie.role = 'admin'
+            req.session.role = 'admin'
             console.log('admin')
+            console.log(req.session.role,"role")
             res.status(200).send('/admin');
 
         }else{
