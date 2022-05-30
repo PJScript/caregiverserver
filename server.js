@@ -140,6 +140,11 @@ app.post('/login', (req,res) => {
         return;
     }
     if(result){
+        console.log(result[0].password)
+        console.log(inputPw)
+        console.log(result[0].password === inputPw)
+
+
         if(result[0].password === inputPw){
             req.session.role = 'admin'
             console.log('admin')
