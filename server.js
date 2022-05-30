@@ -55,6 +55,20 @@ app.use(express.json({
     credentials: true,
 }))
 
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        store: new MemoryStore({
+            checkPeriod: 600000, // 24 hours (24*60*60 * 1000ms)
+        }),
+        cookie: { maxAge: 600000,
+            domain:'.kkyoyangedu' 
+},
+    })
+);
+
   app.post('/api/image',upload.single('image'), async (req,res) => {
     await console.log(req.file,"this")
     let file = await req.file;
@@ -110,18 +124,7 @@ app.post('/rm', (req,res) => {
 
 
 
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: true,
-        store: new MemoryStore({
-            checkPeriod: 600000, // 24 hours (24*60*60 * 1000ms)
-        }),
-        cookie: { maxAge: 600000, 
-},
-    })
-);
+
 
 app.get('/', (req,res) => {
 
