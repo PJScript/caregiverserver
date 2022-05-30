@@ -185,7 +185,7 @@ app.post('/api/image',upload.single('image'), async (req,res) => {
               return;
           }
           
-          connection.query(`insert into gallery(img_url, user_idx, del_yn,create_date) values("${result.Location}",0,0,${date})`, (err,result) => {
+          connection.query(`insert into gallery(img_url, user_idx, del_yn, create_date) values("${result.Location}",0,0,'${date}' )`, (err,result) => {
             console.log(result,"디비 인설트");
           })
           console.log(result,"success 200")
