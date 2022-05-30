@@ -39,10 +39,10 @@ const app = express();
 
 
 app.use(express.json({
-    limit: '1mb'
+    limit: '10mb'
   }))
   app.use(express.urlencoded({
-    limit: '1mb',
+    limit: '10mb',
     extended: false
   }))
 
