@@ -62,7 +62,8 @@ app.use(
 );
 
 app.get('/', (req,res) => {
-    res.send(200).send('Hello World !')
+
+    res.status(200).send('Hello World !')
 })
 
 app.get('/gallery', (req,res) => {
