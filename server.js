@@ -47,8 +47,8 @@ app.use(express.json({
   }))
 
   app.use(cors({
-    origin:'http://kkyoyangedu.com',
-    // origin:'http://localhost:3000',
+    // origin:'http://kkyoyangedu.com',
+    origin:'http://localhost:3000',
 
     methods: ['GET', 'POST'],
     credentials: true,
@@ -91,6 +91,16 @@ app.use(express.json({
 })
 
 
+app.post('/rm', (req,res) => {
+    console.log("rm요청")
+    let uid = Number(req.query.uid);
+    connection.query(`UPDATE gallery SET del_yn=1 WHERE uid=${uid}`,(err,result)=>{
+        console.log(result)
+        res.status(200).send('success')
+    })
+})
+
+
 
 
 
@@ -127,12 +137,12 @@ app.get('/gallery', (req,res) => {
     
 
     // console.log(req.session,'세션')
-        connection.query(`select * from gallery order by uid DESC limit ${num},${lastNum}`, (err, result) => {
+        connection.query(`select * from gallery where del_yn=0 order by uid DESC limit ${num},${lastNum}`, (err, result) => {
             // console.log(result,"this")
-            connection.query(`SELECT COUNT(*) FROM gallery`, (err, count) => {
-                console.log(count)
+            connection.query(`select COUNT(if(del_yn=0,del_yn,null)) from gallery`, (err, count) => {
+                console.log(count,"카운트")
                 console.log(result)
-                res.status(200).send({result,count:count[0]['COUNT(*)']});
+                res.status(200).send({result,count:count[0]['COUNT(if(del_yn=0,del_yn,null)']});
         return;
 
     
@@ -157,11 +167,11 @@ app.get('/admin', (req,res) => {
 
     console.log(req.session,'세션')
     if(req.session.role === 'admin'){
-        connection.query(`select * from gallery order by uid DESC limit ${num},${num+12}`, (err, result) => {
+        connection.query(`select * from gallery where del_yn=0 order by uid DESC limit ${num},${num+12}`, (err, result) => {
             // console.log(result,"this")
-            connection.query(`SELECT COUNT(*) FROM gallery`, (err, count) => {
+            connection.query(`select COUNT(if(del_yn=0,del_yn,null)) from gallery`, (err, count) => {
                 console.log(count)
-                res.status(200).send({result,count:count[0]['COUNT(*)']});
+                res.status(200).send({result,count:count[0]['COUNT(if(del_yn=0,del_yn,null))']});
     
             })
         return;
