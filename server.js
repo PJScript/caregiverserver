@@ -66,7 +66,7 @@ app.use(express.json({
     // }
     
     const param = {
-        'Bucket':'버킷이름',
+        'Bucket':'onlyimagebucket',
         'Key': `${Date.now().toString()}${req.file.originalname}`,
         'ACL':'public-read',
         'Body':req.file.buffer,
