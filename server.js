@@ -39,12 +39,12 @@ const app = express();
 
 
 app.use(express.json({
-
-}));
-app.use(express.urlencoded({
-
+    limit: '1mb'
+  }))
+  app.use(express.urlencoded({
+    limit: '1mb',
     extended: false
-}));
+  }))
 
 app.use(cors({
     origin:'http://kkyoyangedu.com',
