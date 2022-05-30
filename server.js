@@ -61,6 +61,10 @@ app.use(
     })
 );
 
+app.get('/', (req,res) => {
+    res.send(200).send('Hello World !')
+})
+
 app.get('/gallery', (req,res) => {
     let num = Number(req.query.page)
     num = num - 1;
