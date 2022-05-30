@@ -47,6 +47,7 @@ app.use(express.json({
   }))
 
   app.use(cors({
+    // origin:"http://localhost:3000",
     origin:'http://kkyoyangedu.com',
     // origin:'http://localhost:3000',
 
@@ -58,12 +59,17 @@ app.use(express.json({
     await console.log(req.file,"this")
     let file = await req.file;
 
+    if(!file){
+        res.status(403).send('please select file')
+        return;
+    }
+    if(!req.session.role && req.session.role !== 'admin'){
+        console.log("test")
+        res.status(403).send('/')
+        return;
+    }
 
-    // if(!req.session.role && req.session.role !== 'admin'){
-    //     console.log("test")
-    //     res.status(403).send('/')
-    //     return;
-    // }
+
     
     const param = {
         'Bucket':'onlyimagebucket',
@@ -172,7 +178,7 @@ app.get('/admin', (req,res) => {
             connection.query(`select COUNT(if(del_yn=0,del_yn,null)) from gallery`, (err, count) => {
                 console.log(count)
                 res.status(200).send({result,count:count[0]['COUNT(if(del_yn=0,del_yn,null))']});
-    
+
             })
         return;
     
