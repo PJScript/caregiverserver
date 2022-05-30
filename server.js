@@ -38,13 +38,50 @@ const s3 = new AWS.S3({
 const app = express();
 
 
-app.use(express.json({
-    limit: '10mb'
-  }))
+// app.use(express.json({
+//     limit: '10mb'
+//   }))
   app.use(express.urlencoded({
     limit: '10mb',
     extended: false
   }))
+
+  app.post('/api/image',upload.single('image'), async (req,res) => {
+    await console.log(req.file,"this")
+    let file = await req.file;
+
+
+    if(!req.session.role && req.session.role !== 'admin'){
+        console.log("test")
+        res.status(403).send('/')
+        return;
+    }
+    
+    const param = {
+        'Bucket':'버킷이름',
+        'Key': `${Date.now().toString()}${req.file.originalname}`,
+        'ACL':'public-read',
+        'Body':req.file.buffer,
+        // 'ContentType':'image/png'
+      }
+      let date = new Date()
+        s3.upload(param,(err,result)=>{
+            console.log("업로드 시작")
+          if(err){
+              console.log(err)
+              return;
+          }
+          
+          connection.query(`insert into gallery(img_url, user_idx, del_yn) values("${result.Location}",0,0)`, (err,result) => {
+
+          })
+          console.log(result,"success 200")
+        })
+
+
+    res.status(200).send("success");
+})
+
 
 app.use(cors({
     origin:'http://kkyoyangedu.com',
@@ -179,41 +216,7 @@ app.post('/change', (req,res) => {
 
 
 
-app.post('/api/image',upload.single('image'), async (req,res) => {
-    await console.log(req.file,"this")
-    let file = await req.file;
 
-
-    if(!req.session.role && req.session.role !== 'admin'){
-        console.log("test")
-        res.status(403).send('/')
-        return;
-    }
-    
-    const param = {
-        'Bucket':'onlyimagebucket',
-        'Key': `${Date.now().toString()}${req.file.originalname}`,
-        'ACL':'public-read',
-        'Body':req.file.buffer,
-        // 'ContentType':'image/png'
-      }
-      let date = new Date()
-        s3.upload(param,(err,result)=>{
-            console.log("업로드 시작")
-          if(err){
-              console.log(err)
-              return;
-          }
-          
-          connection.query(`insert into gallery(img_url, user_idx, del_yn) values("${result.Location}",0,0)`, (err,result) => {
-            console.log(result,"디비 인설트");
-          })
-          console.log(result,"success 200")
-        })
-
-
-    res.status(200).send("success");
-})
 
 
 
