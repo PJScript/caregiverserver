@@ -177,7 +177,7 @@ app.post('/api/image',upload.single('image'), async (req,res) => {
         'Body':req.file.buffer,
         // 'ContentType':'image/png'
       }
-    
+      let date = new Date()
         s3.upload(param,(err,result)=>{
             console.log("업로드 시작")
           if(err){
@@ -185,7 +185,7 @@ app.post('/api/image',upload.single('image'), async (req,res) => {
               return;
           }
           
-          connection.query(`insert into gallery(img_url, user_idx, del_yn) values("${result.Location}",0,0)`, (err,result) => {
+          connection.query(`insert into gallery(img_url, user_idx, del_yn,create_date) values("${result.Location}",0,0,${date})`, (err,result) => {
             console.log(result,"디비 인설트");
           })
           console.log(result,"success 200")
