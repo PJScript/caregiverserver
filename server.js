@@ -107,7 +107,7 @@ app.get('/admin', (req,res) => {
     
 
     console.log(req.session,'세션')
-    if(1){
+    if(req.session.role === 'admin'){
         connection.query(`select * from gallery order by uid DESC limit ${num},${num+12}`, (err, result) => {
             // console.log(result,"this")
             connection.query(`SELECT COUNT(*) FROM gallery`, (err, count) => {
@@ -169,11 +169,11 @@ app.post('/api/image',upload.single('image'), async (req,res) => {
     let file = await req.file;
 
 
-    // if(!req.session.role && req.session.role !== 'admin'){
-    //     console.log("test")
-    //     res.status(403).send('/')
-    //     return;
-    // }
+    if(!req.session.role && req.session.role !== 'admin'){
+        console.log("test")
+        res.status(403).send('/')
+        return;
+    }
     
     const param = {
         'Bucket':'onlyimagebucket',
