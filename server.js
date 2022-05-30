@@ -64,7 +64,7 @@ app.use(
             checkPeriod: 600000, // 24 hours (24*60*60 * 1000ms)
         }),
         cookie: { maxAge: 600000,
-            domain:'.kkyoyangedu.com' 
+ 
 },
     })
 );
@@ -77,7 +77,7 @@ app.use(
         res.status(403).send('please select file')
         return;
     }
-    if(!req.session.role && req.session.role !== 'admin'){
+    if(!req.session.role && req.session.role !== 'admin'){  // admin 검증
         console.log("test")
         res.status(403).send('/')
         return;
@@ -112,7 +112,12 @@ app.use(
 
 
 app.post('/rm', (req,res) => {
-    console.log("rm요청")
+
+    if(!req.session.role && req.session.role !== 'admin'){  // admin 검증
+        res.status(403).send('/')
+        return;
+    }
+
     let uid = Number(req.query.uid);
     connection.query(`UPDATE gallery SET del_yn=1 WHERE uid=${uid}`,(err,result)=>{
         console.log(result)
@@ -149,8 +154,6 @@ app.get('/gallery', (req,res) => {
         connection.query(`select * from gallery where del_yn=0 order by uid DESC limit ${num},${lastNum}`, (err, result) => {
             // console.log(result,"this")
             connection.query(`select COUNT(if(del_yn=0,del_yn,null)) from gallery`, (err, count) => {
-                console.log(count,"카운트")
-                console.log(result)
                 res.status(200).send({result,count:count[0]['COUNT(if(del_yn=0,del_yn,null)']});
         return;
 
@@ -161,8 +164,7 @@ app.get('/gallery', (req,res) => {
     })
 
 app.get('/admin', (req,res) => {
-    console.log('get요청')
-    console.log(req.query)
+
     let num = Number(req.query.page)
     num = num - 1;
 
@@ -179,7 +181,6 @@ app.get('/admin', (req,res) => {
         connection.query(`select * from gallery where del_yn=0 order by uid DESC limit ${num},${num+12}`, (err, result) => {
             // console.log(result,"this")
             connection.query(`select COUNT(if(del_yn=0,del_yn,null)) from gallery`, (err, count) => {
-                console.log(count)
                 res.status(200).send({result,count:count[0]['COUNT(if(del_yn=0,del_yn,null))']});
 
             })
@@ -197,35 +198,24 @@ app.get('/admin', (req,res) => {
 app.post('/login', (req,res) => {
   let inputId = req.body.id;
   let inputPw = sha256(req.body.pw).toString();
-  console.log(inputPw,"inputPW")
   
   let sql = { account:inputId }
   connection.query('SELECT * from users where ?',sql,(error,result) => {
-    console.log(result)
 
     if(!result || result.length <= 0){
         res.status(403).send('/login');
         return;
     }
     if(result){
-        console.log(result[0].password)
-        console.log(inputPw)
-        console.log(result[0].password === inputPw)
-
-
         if(result[0].password === inputPw){
             req.session.role = 'admin'
-            console.log('admin')
-            console.log(req.session.role,"role")
             res.status(200).send('/admin');
-
         }else{
             res.status(403).send('/login');
         }
     }else{
         req.session.role = 'denied'
         res.status(200).send('/login');
-        console.log('denied')
     }
   });
 })
