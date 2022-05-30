@@ -48,8 +48,8 @@ app.use(express.json({
 
   app.use(cors({
     // origin:"http://localhost:3000",
-    origin:'http://kkyoyangedu.com',
-    // origin:'http://localhost:3000',
+    // origin:'http://kkyoyangedu.com',
+    origin:'http://localhost:3000',
 
     methods: ['GET', 'POST'],
     credentials: true,
@@ -154,7 +154,8 @@ app.get('/gallery', (req,res) => {
         connection.query(`select * from gallery where del_yn=0 order by uid DESC limit ${num},${lastNum}`, (err, result) => {
             // console.log(result,"this")
             connection.query(`select COUNT(if(del_yn=0,del_yn,null)) from gallery`, (err, count) => {
-                res.status(200).send({result,count:count[0]['COUNT(if(del_yn=0,del_yn,null)']});
+                console.log(count,"count")
+                res.status(200).send({result,count:count[0]['COUNT(if(del_yn=0,del_yn,null))']});
         return;
 
     
