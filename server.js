@@ -47,8 +47,8 @@ app.use(express.json({
   }))
 
 app.use(cors({
-    // origin:'http://kkyoyangedu.com',
-    origin:'http://localhost:3000',
+    origin:'http://kkyoyangedu.com',
+    // origin:'http://localhost:3000',
 
     methods: ['GET', 'POST'],
     credentials: true,
