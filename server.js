@@ -56,8 +56,7 @@ app.use(
         }),
         cookie: { maxAge: 600000, 
     sameSite: 'none',
-    Secure:false,
-    domain: 'kkyoyangedu.com'
+
 },
     })
 );
