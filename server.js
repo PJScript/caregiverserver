@@ -40,7 +40,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cors({
-    origin:'http://kkyoyangedu.com',
+    origin:'http://kkyoyangedu.com:8080',
     methods: ['GET', 'POST'],
     credentials: true,
 }))
@@ -56,6 +56,7 @@ app.use(
         }),
         cookie: { maxAge: 600000, 
     sameSite: 'none',
+    secure:false, 
 
 },
     })
