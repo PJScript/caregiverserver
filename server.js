@@ -41,10 +41,10 @@ const app = express();
 app.use(express.json({
     limit: '10mb'
   }))
-//   app.use(express.urlencoded({
-//     limit: '10mb',
-//     extended: false
-//   }))
+  app.use(express.urlencoded({
+    limit: '10mb',
+    extended: false
+  }))
 
   app.use(cors({
     origin:'http://kkyoyangedu.com',
@@ -59,11 +59,11 @@ app.use(express.json({
     let file = await req.file;
 
 
-    if(!req.session.role && req.session.role !== 'admin'){
-        console.log("test")
-        res.status(403).send('/')
-        return;
-    }
+    // if(!req.session.role && req.session.role !== 'admin'){
+    //     console.log("test")
+    //     res.status(403).send('/')
+    //     return;
+    // }
     
     const param = {
         'Bucket':'버킷이름',
