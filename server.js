@@ -47,7 +47,9 @@ app.use(express.json({
   }))
 
 app.use(cors({
-    origin:'http://kkyoyangedu.com',
+    // origin:'http://kkyoyangedu.com',
+    origin:'http://localhost:3000',
+
     methods: ['GET', 'POST'],
     credentials: true,
 }))
@@ -73,21 +75,24 @@ app.get('/', (req,res) => {
 
 app.get('/gallery', (req,res) => {
     let num = Number(req.query.page)
+    let lastNum = 12
     num = num - 1;
     console.log(num,typeof(num))
     
     if(num === 0){
         num = 0;
     }else{
+        lastNum = lastNum * num
         num = num * 12;
     }
     
 
     // console.log(req.session,'세션')
-        connection.query(`select * from gallery order by uid DESC limit ${num},${num*12}`, (err, result) => {
+        connection.query(`select * from gallery order by uid DESC limit ${num},${lastNum}`, (err, result) => {
             // console.log(result,"this")
             connection.query(`SELECT COUNT(*) FROM gallery`, (err, count) => {
                 console.log(count)
+                console.log(result)
                 res.status(200).send({result,count:count[0]['COUNT(*)']});
         return;
 
