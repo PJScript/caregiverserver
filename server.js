@@ -46,6 +46,14 @@ const app = express();
     extended: false
   }))
 
+  app.use(cors({
+    origin:'http://kkyoyangedu.com',
+    // origin:'http://localhost:3000',
+
+    methods: ['GET', 'POST'],
+    credentials: true,
+}))
+
   app.post('/api/image',upload.single('image'), async (req,res) => {
     await console.log(req.file,"this")
     let file = await req.file;
@@ -83,13 +91,7 @@ const app = express();
 })
 
 
-app.use(cors({
-    origin:'http://kkyoyangedu.com',
-    // origin:'http://localhost:3000',
 
-    methods: ['GET', 'POST'],
-    credentials: true,
-}))
 
 
 app.use(
